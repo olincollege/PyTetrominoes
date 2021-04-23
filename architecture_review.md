@@ -28,3 +28,5 @@ During the game, the player will be able to see their score, the next piece, the
 The score will be calculated by the game model, and it will add ten points every time a piece is placed, as well as additional points when a line is cleared. If there is a full "TETRIS" (four lines of blocks are cleared), then 100 points will be added.
 
 ## Controller
+
+The user is providing input using their arrow keys to move the block up, down, left, and right. We will use input code from PyGame to get input. We will use a function "move" 
