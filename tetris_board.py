@@ -17,15 +17,17 @@ class TetrisBoard:
     """
     score = 0
     state = None
-    board = []
+    field = None
     height = 0
     width = 0
-    Piece = None
+    x = None
+    y = None
+    figure = None
 
     def __init__(self, height, width):
         self.height = height
         self.width = width
-        self.box = []
+        self.field = []
         self.score = 0
         self.state = "start"
         # Create a empty playing field
@@ -33,7 +35,7 @@ class TetrisBoard:
             new_line = []
             for column in range(width):
                 new_line.append(0)
-            self.box.append(new_line)
+            self.field.append(new_line)
 
     """
     Creates a new piece
