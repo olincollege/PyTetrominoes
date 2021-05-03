@@ -1,7 +1,7 @@
 """
 Tetris Game Implementation
 """
-from tetris_piece import Piece
+from tetris_piece import Piece, colors
 
 class TetrisBoard:
     """
@@ -19,8 +19,8 @@ class TetrisBoard:
     board = []
     height = 20
     width = 10
-    x_position = 100
-    y_position = 60
+    x = 100
+    y = 60
     size = 20
     piece = None
     
@@ -55,7 +55,7 @@ class TetrisBoard:
     
     def __repr__(self):
         print(f"score: {self.score},\n ")
-        print(f"current squares on board:\n{self.field}")
+        print(f"current squares on board:\n{self.board}")
         print(f"Current level is {self.state}")
 
     """
@@ -93,7 +93,7 @@ class TetrisBoard:
         #y = self.piece.global_coordinates[i][0]
         #x = self.piece.global_coordinates[i][1]
         for i in range(4):
-            if self.field[self.piece.global_coordinates[i][0]]\
+            if self.board[self.piece.global_coordinates[i][0]]\
                 [self.piece.global_coordinates[i][1] - 1] != 0:
                 return True
         return False
@@ -101,7 +101,7 @@ class TetrisBoard:
     def touch_right(self):
         self.global_coordinates()
         for i in range(4):
-            if self.field[self.piece.global_coordinates[i][0]]\
+            if self.board[self.piece.global_coordinates[i][0]]\
                 [self.piece.global_coordinates[i][1] + 1] != 0:
                 return True
         return False
@@ -109,7 +109,7 @@ class TetrisBoard:
     def touch_top(self):
         self.global_coordinates()
         for i in range(4):
-            if self.field[self.piece.global_coordinates[i][0] - 1]\
+            if self.board[self.piece.global_coordinates[i][0] - 1]\
                 [self.piece.global_coordinates[i][1]] != 0:
                 return True
         return False
@@ -121,7 +121,7 @@ class TetrisBoard:
     def touch_rotate(self):
         self.global_coordinates(self.piece.rotation + 1)
         for i in range(4):
-            if self.field[self.piece.global_coordinates[i][0]]\
+            if self.board[self.piece.global_coordinates[i][0]]\
                 [self.piece.global_coordinates[i][1]] != 0:
                 return True
         return False
@@ -131,11 +131,11 @@ class TetrisBoard:
     """
     def break_line(self):
         new_rows = 0
-        for i in range(len(self.field)):
-            if 0 not in self.field[i]:
+        for i in range(len(self.board)):
+            if 0 not in self.board[i]:
                 new_rows_cleared += 1
-                self.field = self.field[0:i] + self.field[i+1:]
-                self.field.insert(0, [0 for _ in range(10)])
+                self.board = self.board[0:i] + self.board[i+1:]
+                self.board.insert(0, [0 for _ in range(10)])
         self.score += self.row_score[new_rows + 1] * (self.state + 1)
         self.rows_cleared += new_rows
         if self.rows_cleared >= 10:
@@ -148,7 +148,7 @@ class TetrisBoard:
     def freeze(self):
         self.global_coordinates()
         for i in range(4):
-            self.field[self.piece.global_coordinates[i][0]]\
+            self.board[self.piece.global_coordinates[i][0]]\
                 [self.piece.global_coordinates[i][1]] = self.piece.color
 
     """

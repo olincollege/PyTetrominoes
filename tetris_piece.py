@@ -38,6 +38,18 @@ class Piece:
         [[4, 5, 9, 10], [2, 5, 6, 9]], # Z block
         [[1, 2, 5, 6]],  # Square block
     ]
+
+    # Rainbow Colors
+    colors = [
+        (255, 0, 0), # red
+        (255, 127, 0), # orange
+        (255, 215, 0), # yellow
+        (0, 255, 0), # green
+        (0, 0, 255), # blue
+        (46, 43, 95), # indigo
+        (139, 0, 255), # violet
+    ]
+    
     # Piece attributes
     def __init__(self, y, x):
         self.x = x

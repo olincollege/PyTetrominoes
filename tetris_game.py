@@ -48,11 +48,11 @@ def main():
         # Create a 10 x 20 base grid for Tetris
         for row in range(tetris_game.height):
             for column in range(tetris_game.width):
-                pygame.draw.rect(screen, GRAY, [tetris_game.x + tetris_game.zoom * column, tetris_game.y + tetris_game.zoom * row, \
-                    tetris_game.zoom, tetris_game.zoom], 1)
-                if tetris_game.board[row][column] > 0:
-                    pygame.draw.rect(screen, colors[tetris_game.piece[row][column]],
-                                    [tetris_game.x + tetris_game.zoom * column + 1, tetris_game.y + tetris_game.zoom * row + 1, tetris_game.zoom - 2, tetris_game.zoom - 1])
+                pygame.draw.rect(screen, GRAY, [tetris_game.x + tetris_game.size * column, tetris_game.y + tetris_game.size * row, \
+                    tetris_game.size, tetris_game.size], 1)
+                if tetris_game.board[row][column]:
+                    pygame.draw.rect(screen, colors[tetris_game.board[row][column]],
+                                    [tetris_game.x + tetris_game.size * column + 1, tetris_game.y + tetris_game.size * row + 1, tetris_game.size - 2, tetris_game.size - 1])
 
         # Create the blocks within the square
 
