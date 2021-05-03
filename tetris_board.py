@@ -6,7 +6,6 @@ from tetris_piece import Piece
 class TetrisBoard:
     """
     Tetris Board with basic play functionality
-
     Attributes:
         score: current game score
         state: current state of game (start or finish)
@@ -71,7 +70,6 @@ class TetrisBoard:
         """
         Gives the global coordinates of a piece's location
         based on its rotation and the reference frame coordinates.
-
         sets self.global_coordinates to a list of four lists, each containing
         the y and x coordinates (row and column number) of each block in the
         piece.
@@ -116,9 +114,9 @@ class TetrisBoard:
                 return True
         return False
 
-"""
-Check if the rotated block would touch another block
-"""
+    """
+    Check if the rotated block would touch another block
+    """
 
     def touch_rotate(self):
         self.global_coordinates(self.piece.rotation + 1)
