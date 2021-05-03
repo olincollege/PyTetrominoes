@@ -76,7 +76,7 @@ class TetrisBoard:
         the y and x coordinates (row and column number) of each block in the
         piece.
         """
-        if rotation = None:
+        if rotation == None:
             rotation = self.piece.rotation
         ref_frame = [0 for _ in range(4)]
         for i in range(4):

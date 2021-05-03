@@ -37,7 +37,7 @@ class Piece:
         [[5, 6, 8, 9], [1, 5, 6, 10]], # S block
         [[4, 5, 9, 10], [2, 5, 6, 9]], # Z block
         [[1, 2, 5, 6]],  # Square block
-
+    ]
     # Piece attributes
     def __init__(self, y, x):
         self.x = x
