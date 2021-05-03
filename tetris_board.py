@@ -16,26 +16,26 @@ class TetrisBoard:
         Piece: the piece
     """
     score = 0
-    state = None
-    field = None
-    height = 0
-    width = 0
-    x = None
-    y = None
-    figure = None
+    state = "start"
+    board = []
+    height = 20
+    width = 10
+    x_position = 100
+    y_position = 60
+    size = 20
+    piece = None
 
     def __init__(self, height, width):
         self.height = height
         self.width = width
-        self.field = []
+        self.board = []
         self.score = 0
         self.state = "start"
-        # Create a empty playing field
         for row in range(height):
             new_line = []
             for column in range(width):
                 new_line.append(0)
-            self.field.append(new_line)
+            self.board.append(new_line)
 
     """
     Creates a new piece
@@ -44,9 +44,9 @@ class TetrisBoard:
         self.piece = Piece(0,0)
 
     """
-    Check if the falling piece is intersecting with something fixed on the field
+    Check if the falling piece is touching something fixed on the field
     """
-    def intersects(self):
+    def touches(self):
         pass
 
     """
@@ -64,7 +64,7 @@ class TetrisBoard:
     """
     Move the block all the way down until it can't move anymore
     """
-    def go_space(self):
+    def smash(self):
         pass
 
     """

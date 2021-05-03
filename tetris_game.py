@@ -3,6 +3,7 @@ Import statements
 '''
 import pygame
 from tetris_board import TetrisBoard
+from tetris_piece import Piece, colors
 
 # Initialize pygame
 pygame.init()
@@ -21,7 +22,7 @@ pygame.display.set_caption("PyTetrominoes")
 
 # Loop until user clicks the close button
 clock = pygame.time.Clock()
-game = TetrisBoard(20, 10) # NOTE: Need to finish initializing
+tetris_game = TetrisBoard(20, 10)
 pressing_down = False
 
 def main():
@@ -30,8 +31,11 @@ def main():
     run = True
     while run:
         # If game state is start, start pulling blocks down
+        if tetris_game.piece is None:
+            tetris_game.new_piece()
 
-        # Initialize controls here
+        if tetris_game.state == "start":
+            tetris_game.go_down()
 
         # Place controls in here
         for event in pygame.event.get():
@@ -39,9 +43,21 @@ def main():
                 run = False
 
         # Make blocks here
-        screen.fill(WHITE)
+        screen.fill(BLACK)
 
-        # Make the screen here
+        # Draw the objects
+        for row in range(tetris_game.height):
+            for column in range(tetris_game.width):
+                # Draw the 10 x 20 board
+                pygame.draw.rect(screen, WHITE, \
+                    [tetris_game.x_position + tetris_game.size * column, tetris_game.y_position + tetris_game.size * row, \
+                    tetris_game.size, tetris_game.size], 1)
+
+                # Draw the pieces on the board
+                if tetris_game.board[row][column]:
+                    pygame.draw.rect(screen, colors[tetris_game.piece[row][column]], \
+                        [tetris_game.x_position + tetris_game.size * column + 1, tetris_game.y_position + tetris_game.size * row + 1, \
+                            tetris_game.size - 2, tetris_game.size - 1])
 
         # Create the blocks within the square
 
