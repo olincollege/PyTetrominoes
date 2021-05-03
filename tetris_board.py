@@ -44,19 +44,19 @@ class TetrisBoard:
         #self.y = None
         #self.x = None
         # Create a empty playing field
-        self.board = [[0 for _ in range(self.width)]\
-        for _ in range(self.width)]
+        # self.board = [[0 for _ in range(self.width)]\
+        # for _ in range(self.height)]
         
-#         for row in range(height):
-#             new_line = []
-#             for column in range(width):
-#                 new_line.append(0)
-#             self.board.append(new_line)
+        for row in range(height):
+            new_line = []
+            for column in range(width):
+                new_line.append((0,0,0))
+            self.board.append(new_line)
     
     def __repr__(self):
         print(f"score: {self.score},\n ")
         print(f"current squares on board:\n{self.board}")
-        print(f"Current level is {self.state}")
+        print(f"Current level is {self.level}")
 
     """
     Creates a new active piece
@@ -177,13 +177,3 @@ class TetrisBoard:
     def go_right(self):
         if not self.touch_right():
             self.piece.x = self.piece.x + 1
-
-    """
-    Rotate the block
-    """
-    def rotate(self):
-        if not self.touch_rotate():
-            if self.piece.rotation >= self.piece.max_rotation - 1:
-                self.piece.rotation = 0
-            else:
-                self.piece.rotation += 1

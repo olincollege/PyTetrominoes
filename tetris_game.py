@@ -42,19 +42,30 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
 
-        # Make blocks here
-        screen.fill(BLACK)
+        # # Make blocks here
+        # screen.fill(BLACK)
+        # tetris_game.board[4][4] == 2
+
+        # colors[tetris_game.board[4][4]]
+        # tetris_game.board[4][4].color
+
+        # tetris_game.piece.color
 
         # Create a 10 x 20 base grid for Tetris
         for row in range(tetris_game.height):
             for column in range(tetris_game.width):
                 pygame.draw.rect(screen, GRAY, [tetris_game.x + tetris_game.size * column, tetris_game.y + tetris_game.size * row, \
                     tetris_game.size, tetris_game.size], 1)
-                if tetris_game.board[row][column]:
-                    pygame.draw.rect(screen, colors[tetris_game.board[row][column]],
-                                    [tetris_game.x + tetris_game.size * column + 1, tetris_game.y + tetris_game.size * row + 1, tetris_game.size - 2, tetris_game.size - 1])
+                if tetris_game.board[row][column] == tetris_game.piece.empty:
+                    pass
+                # if tetris_game.board[row][column] is True:
+                #     pygame.draw.rect(screen, tetris_game.piece[row][column],
+                #                     [tetris_game.x + tetris_game.size * column + 1, tetris_game.y + tetris_game.size * row + 1, tetris_game.size - 2, tetris_game.size - 1])
 
+
+        
         # Create the blocks within the square
+        # pygame.draw.rect(screen, colors[game.piece.color],[])
 
         # Display game over here when finishing looping through everything
 
