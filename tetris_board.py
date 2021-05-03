@@ -20,9 +20,9 @@ class TetrisBoard:
     board = []
     height = 20
     width = 10
-    x = 100
-    y = 60
-    zoom = 20
+    x_position = 100
+    y_position = 60
+    size = 20
     piece = None
 
     def __init__(self, height, width):
@@ -44,9 +44,9 @@ class TetrisBoard:
         self.piece = Piece(0,0)
 
     """
-    Check if the falling piece is intersecting with something fixed on the field
+    Check if the falling piece is touching something fixed on the field
     """
-    def intersects(self):
+    def touches(self):
         pass
 
     """
@@ -64,7 +64,7 @@ class TetrisBoard:
     """
     Move the block all the way down until it can't move anymore
     """
-    def go_space(self):
+    def smash(self):
         pass
 
     """
