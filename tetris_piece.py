@@ -1,4 +1,3 @@
-
 """
 Tetris Piece Implementation
 """
@@ -11,9 +10,9 @@ colors = [
     (255, 127, 0), # orange
     (255, 215, 0), # yellow
     (0, 255, 0), # green
-    (0, 0, 255), # blue
-    (46, 43, 95), # indigo
+    (0, 255, 255), # blue
     (139, 0, 255), # violet
+    (255, 20, 147) # pink
 ]
 
 class Piece:
@@ -44,10 +43,9 @@ class Piece:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.type = random.choice(self.all_pieces)
-        self.color = random.choice(colors)
-        self.rotation = 0
-        self.empty = (0,0,0)
+        self.type = random.randint(0, len(self.all_pieces) - 1)
+        self.color = random.randint(1, len(colors) - 1)
+        self.orientation = 0
 
     """
     Gets the image of the piece
@@ -59,7 +57,7 @@ class Piece:
         the piece type with its current orientation
     """
     def piece_image(self):
-        return self.all_pieces[self.type][self.rotation]
+        return self.all_pieces[self.type][self.orientation]
 
     """
     Rotates the piece by choosing the next rotation in line
@@ -71,14 +69,4 @@ class Piece:
         the piece type with its current orientation
     """
     def rotate(self):
-        self.rotation = (self.rotation + 1) % len(self.figures[self.type])
-
-    # """
-    # Rotate the block
-    # """
-    # def rotate(self):
-    #     if not self.touch_rotate():
-    #         if self.piece.rotation >= self.piece.max_rotation - 1:
-    #             self.piece.rotation = 0
-    #         else:
-    #             self.piece.rotation += 1
+        self.orientation = (self.orientation + 1) % len(self.all_pieces[self.type])
