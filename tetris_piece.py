@@ -10,7 +10,7 @@ colors = [
     (255, 127, 0), # orange
     (255, 215, 0), # yellow
     (0, 255, 0), # green
-    (0, 0, 255), # blue
+    (0, 255, 255), # blue
     (139, 0, 255), # violet
     (255, 20, 147) # pink
 ]
@@ -45,7 +45,7 @@ class Piece:
         self.y = y
         self.type = random.randint(0, len(self.all_pieces) - 1)
         self.color = random.randint(1, len(colors) - 1)
-        self.rotation = 0
+        self.orientation = 0
 
     """
     Gets the image of the piece
@@ -57,7 +57,7 @@ class Piece:
         the piece type with its current orientation
     """
     def piece_image(self):
-        return self.all_pieces[self.type][self.rotation]
+        return self.all_pieces[self.type][self.orientation]
 
     """
     Rotates the piece by choosing the next rotation in line
@@ -69,4 +69,4 @@ class Piece:
         the piece type with its current orientation
     """
     def rotate(self):
-        self.rotation = (self.rotation + 1) % len(self.figures[self.type])
+        self.orientation = (self.orientation + 1) % len(self.all_pieces[self.type])

@@ -9,13 +9,12 @@ class TetrisBoard:
     Tetris Board with basic play functionality
 
     Attributes:
+        score: current game score
+        state: current state of game (start or finish)
+        board: current 20x10 playing field
         height: height of the board
         width: width of the board
-        board: current 20x10 playing field
-        score: current game score
-        level: game level based on rows cleared
-        state: current state of game (start or finish)
-        Piece: the piece
+        piece: the tetris piece
     """
     score = 0
     state = "start"
@@ -30,32 +29,40 @@ class TetrisBoard:
     def __init__(self, height, width):
         self.height = height
         self.width = width
-        self.board = []
         self.score = 0
-        self.level = 1
         self.state = "start"
-        for row in range(height):
-            new_line = []
-            for column in range(width):
-                new_line.append(0)
-            self.board.append(new_line)
-    
-    def __repr__(self):
-        print(f"score: {self.score},\n ")
-        print(f"current squares on board:\n{self.board}")
-        print(f"Current level is {self.level}")
+        self.board = [[0 for _ in range(self.width)] for _ in range(self.height)]
 
     """
     Creates a new piece
     """
     def new_piece(self):
-        self.piece = Piece(3,0)
+        self.piece = Piece(3, 0)
 
     """
-    Check if the piece is touching something fixed on the field
+    Check if the falling piece is intersecting with something fixed on the field
     """
-    def touches(self):
-        pass
+    def check_collision(self):
+        collision = False
+        # For each 4x4 block space piece
+        for row in range(4):
+            for column in range(4):
+                # Check each individual block in the 4x4 square for the piece
+                if row * 4 + column in self.piece.piece_image():
+                    # Conditional by row:
+                    # - If the current piece width and the piece height
+                    # is greater than the base of the board (bottom),
+                    # - If the current piece height and the piece width
+                    # is greater than the sides of the board (right side), 
+                    # - If the current piece height and the piece width
+                    # is less than zero (left side),
+                    # - If the pieces on the board make contact with each other
+                    if row + self.piece.y > self.height - 1 or \
+                            column + self.piece.x > self.width - 1 or \
+                            column + self.piece.x < 0 or \
+                            self.board[row + self.piece.y][column + self.piece.x] > 0:
+                        collision = True
+        return collision
 
     """
     Destroy line if pieces make a row
@@ -63,34 +70,74 @@ class TetrisBoard:
     def break_line(self):
         pass
 
-
     """
     Check if allowed to move or rotate the Figure
     """
     def freeze(self):
-        pass
+        # For each 4x4 block space piece
+        for row in range(4):
+            for column in range(4):
+                # Check each individual block in the 4x4 square for the piece
+                if row * 4 + column in self.piece.piece_image():
+                    # Make the grid points the colors of the halted piece
+                    self.board[row + self.piece.y][column + self.piece.x] = self.piece.color
+        # Checks to see if a line can be broken
+        self.break_line() #TODO: Implement
+        # Creates a new piece on the board
+        self.new_piece()
 
     """
     Move the block all the way down until it can't move anymore
     """
     def smash(self):
-        pass
+        # Until the block collides with something
+        while self.check_collision() is False:
+            # Bring the piece down
+            self.piece.y += 1
+        # When it collides with something, stop the piece
+        self.piece.y -= 1
+        self.freeze()
 
     """
     Move the block down by one space
     """
     def go_down(self):
+        # Make the block go down by one
         self.piece.y += 1
         time.sleep(0.2)
+        # When the piece collides with something, stop it
+        if self.check_collision():
+            self.piece.y -= 1
+            self.freeze()
 
     """
-    Move the block sideways
+    Move the block to the left
     """
-    def go_side(self):
-        pass
+    def go_left(self):
+        # Moves the object to the left
+        self.piece.x -= 1
+        # Reject going left if necessary
+        if self.check_collision():
+            self.piece.x += 1
+
+    """
+    Move the block to the right
+    """
+    def go_right(self):
+        # Moves the object to the right
+        self.piece.x += 1
+        # Reject going right if necessary
+        if self.check_collision():
+            self.piece.x -= 1
 
     """
     Rotate the block
     """
     def rotate(self):
-        pass
+        # Save the original orientation
+        original_orientation = self.piece.orientation
+        # Rotate the object
+        self.piece.rotate()
+        # Reject the rotation if necessary
+        if self.check_collision():
+            self.piece.orientation = original_orientation

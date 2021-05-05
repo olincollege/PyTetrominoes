@@ -1,14 +1,14 @@
 '''
 Import statements
 '''
-import pygame
+import pygame, time
+
 from tetris_board import TetrisBoard
 from tetris_piece import Piece, colors
 
 # Initialize pygame
 pygame.init()
 
-# Initialize colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GRAY = (128, 128, 128)
@@ -20,80 +20,106 @@ size = (WIDTH, HEIGHT)
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("PyTetrominoes")
 
-# Loop until user clicks the close button
+# Loop until the user clicks the close button.
 clock = pygame.time.Clock()
 tetris_game = TetrisBoard(20, 10)
-pressing_down = False
 
 def main():
     pressing_down = False
 
     run = True
     while run:
-        # If game state is start, start pulling blocks down
         if tetris_game.piece is None:
             tetris_game.new_piece()
-
+        
         if tetris_game.state == "start":
             tetris_game.go_down()
-
-        # Place controls in here
+        else:
+            time.sleep(1)
+            break
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    tetris_game.rotate()
+                if event.key == pygame.K_DOWN:
+                    tetris_game.go_down()
+                if event.key == pygame.K_LEFT:
+                    tetris_game.go_left()
+                if event.key == pygame.K_RIGHT:
+                    tetris_game.go_right()
+                if event.key == pygame.K_SPACE:
+                    tetris_game.smash()
 
-        # Make blocks here
         screen.fill(BLACK)
 
-        # Draw the objects onto the board
-        for row in range(tetris_game.height):
-            for column in range(tetris_game.width):
-                # Draw the 10 x 20 board
-                pygame.draw.rect(
-                    # Within the black screen
-                    screen, 
-                    # Make the 10 x 20 field white
-                    WHITE,
-                    # Make 10 columns
-                    [tetris_game.x + tetris_game.size * column,
-                    # Make 20 rows
-                    tetris_game.y + tetris_game.size * row,
-                    # Amplify the columns by the game size
-                    tetris_game.size,
-                    # Amplify the rows by the game size
-                    tetris_game.size],
-                    # Border radius
-                    1)
-
-        # Draw the piece onto the board
-        if tetris_game.piece is not None:
-            # For the width of the 4x4 space
-            for box_row in range(4):
-                # For the height of the 4x4 space
-                for box_column in range(4):
-                    # Get the piece
-                    colored_piece = box_row * 4 + box_column
-                    # If the piece is the same as the image of the piece (always True)
-                    if colored_piece in tetris_game.piece.piece_image():
-                        pygame.draw.rect(
-                        # Within the black screen
-                        screen,
-                        # With the colors of the game piece
-                        colors[tetris_game.piece.color],
-                        # x position of the piece
-                        [tetris_game.x + tetris_game.size * (box_column + tetris_game.piece.x) + 1,
-                        # y position of the piece
-                        tetris_game.y + tetris_game.size * (box_row + tetris_game.piece.y) + 1,
-                        # Amplify the vertical size by the size of the board
-                        tetris_game.size-2,
-                        # Amplify the horizontal size of the block by the size of the board
-                        tetris_game.size-2])
-
-        # Display game over here when finishing looping through everything
-
+        draw()
+        
         pygame.display.flip()
 
     pygame.quit()
+
+def draw():
+    # Draws the Screen
+    for screen_row in range(tetris_game.height):
+            for screen_column in range(tetris_game.width):
+                pygame.draw.rect(
+                    # in the playing screen
+                    screen,
+                    # make the playing board white
+                    WHITE,
+                    # build 20 rows
+                    [tetris_game.x + tetris_game.size * screen_column,
+                    # build 10 columns
+                    tetris_game.y + tetris_game.size * screen_row,
+                    # amplify the size of the columns
+                    tetris_game.size,
+                    # amplify the size of the rows
+                    tetris_game.size],
+                    # border radius
+                    2)
+    
+    # Draws the falling pieces
+    if tetris_game.piece:
+        # For each 4x4 block space piece
+        for block_row in range(4):
+            for block_column in range(4):
+                # Check each individual block in the 4x4 square for the piece
+                if block_row * 4 + block_column in tetris_game.piece.piece_image():
+                    pygame.draw.rect(
+                        # in the playing screen
+                        screen,
+                        # draw the color of the piece
+                        colors[tetris_game.piece.color],
+                        # make the piece fall horizontally
+                        [tetris_game.x + tetris_game.size * (block_column + tetris_game.piece.x) + 1,
+                        # make the piece fall vertically
+                        tetris_game.y + tetris_game.size * (block_row + tetris_game.piece.y) + 1,
+                        # amplify the size of the piece
+                        tetris_game.size - 2,
+                        # amplify the size of the piece
+                        tetris_game.size - 2]
+                        )
+
+    # Draws the Frozen Pieces
+    for board_row in range(tetris_game.height):
+            for board_column in range(tetris_game.width):
+                if tetris_game.board[board_row][board_column]:
+                    pygame.draw.rect(
+                        # in the playing screen
+                        screen, 
+                        # get the current pieces on the board in the instance
+                        colors[tetris_game.board[board_row][board_column]],
+                        # draw the piece in the board squares
+                        [(tetris_game.x) + (tetris_game.size * board_column + 1),
+                        (tetris_game.y) + (tetris_game.size * board_row + 1),
+                        # amplify the size of the piece
+                        tetris_game.size - 2,
+                        # amplify the size of the piece
+                        tetris_game.size - 1]
+                        )
 
 if __name__ == "__main__":
     main()
