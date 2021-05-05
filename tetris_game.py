@@ -53,12 +53,16 @@ def main():
                 if event.key == pygame.K_SPACE:
                     tetris_game.smash()
 
+        # Fills the screen with black
         screen.fill(BLACK)
 
+        # Draws the blocks
         draw()
         
+        # Display changes
         pygame.display.flip()
 
+    # Quit the game when loop is completed
     pygame.quit()
 
 def draw():
