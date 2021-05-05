@@ -10,15 +10,21 @@ class TetrisBoard:
     Attributes:
         score: current game score
         state: current state of game (start or finish)
-        field: current 20x10 playing field
+        board: current 20x10 playing field
         height: height of the board
         width: width of the board
         Piece: the piece
     """
     score = 0
+    state = "start"
+    board = []
     height = 20
     width = 10
-    figure = None
+    x_position = 100
+    y_position = 60
+    size = 20
+    piece = None
+    
     #Gives the relative coordinates on the board of a square
     #of index 0 to 15 in a mini-grid for quick transformations
     block_to_coordinates = [
@@ -27,23 +33,26 @@ class TetrisBoard:
         [2,0],[2,1],[2,2],[2,3],
         [3,0],[3,1],[3,2],[3,3]
         ]
-    #block_to_coordinates = [[x,y] for x in range(4) for y in range(4)]
-    #Points given before multiplier for each possible number of rows cleared
-    row_score = [40, 100, 300, 1200]
-
 
     def __init__(self, height, width):
         self.height = height
         self.width = width
-        self.field = []
+        self.board = []
         self.score = 0
-        self.state = 1 #Game Level
+        self.level = 1 #Game Level
+        self.state = "start"
         self.rows_cleared = 0
         #self.y = None
         #self.x = None
         # Create a empty playing field
-        self.field = [[0 for _ in range(self.width)]\
+        self.board = [[0 for _ in range(self.width)]\
         for _ in range(self.width)]
+        
+#         for row in range(height):
+#             new_line = []
+#             for column in range(width):
+#                 new_line.append(0)
+#             self.board.append(new_line)
     
     def __repr__(self):
         print(f"score: {self.score},\n ")
