@@ -25,8 +25,6 @@ clock = pygame.time.Clock()
 tetris_game = TetrisBoard(20, 10)
 
 def main():
-    pressing_down = False
-
     run = True
     while run:
         if tetris_game.piece is None:
