@@ -1,3 +1,4 @@
+
 """
 Tetris Piece Implementation
 """
@@ -58,7 +59,7 @@ class Piece:
     """
     def piece_image(self):
         return self.all_pieces[self.type][self.orientation]
-
+     
     """
     Rotates the piece by choosing the next rotation in line
 
