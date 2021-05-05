@@ -45,21 +45,49 @@ def main():
         # Make blocks here
         screen.fill(BLACK)
 
-        # Draw the objects
+        # Draw the objects onto the board
         for row in range(tetris_game.height):
             for column in range(tetris_game.width):
                 # Draw the 10 x 20 board
-                pygame.draw.rect(screen, WHITE, \
-                    [tetris_game.x_position + tetris_game.size * column, tetris_game.y_position + tetris_game.size * row, \
-                    tetris_game.size, tetris_game.size], 1)
+                pygame.draw.rect(
+                    # Within the black screen
+                    screen, 
+                    # Make the 10 x 20 field white
+                    WHITE,
+                    # Make 10 columns
+                    [tetris_game.x + tetris_game.size * column,
+                    # Make 20 rows
+                    tetris_game.y + tetris_game.size * row,
+                    # Amplify the columns by the game size
+                    tetris_game.size,
+                    # Amplify the rows by the game size
+                    tetris_game.size],
+                    # Border radius
+                    1)
 
-                # Draw the pieces on the board
-                if tetris_game.board[row][column]:
-                    pygame.draw.rect(screen, colors[tetris_game.piece[row][column]], \
-                        [tetris_game.x_position + tetris_game.size * column + 1, tetris_game.y_position + tetris_game.size * row + 1, \
-                            tetris_game.size - 2, tetris_game.size - 1])
-
-        # Create the blocks within the square
+        # Draw the piece onto the board
+        if tetris_game.piece is not None:
+            # For the width of the 4x4 space
+            for box_row in range(4):
+                # For the height of the 4x4 space
+                for box_column in range(4):
+                    # Get the piece
+                    colored_piece = box_row * 4 + box_column
+                    # If the piece is the same as the image of the piece (always True)
+                    if colored_piece in tetris_game.piece.piece_image():
+                        pygame.draw.rect(
+                        # Within the black screen
+                        screen,
+                        # With the colors of the game piece
+                        colors[tetris_game.piece.color],
+                        # x position of the piece
+                        [tetris_game.x + tetris_game.size * (box_column + tetris_game.piece.x) + 1,
+                        # y position of the piece
+                        tetris_game.y + tetris_game.size * (box_row + tetris_game.piece.y) + 1,
+                        # Amplify the vertical size by the size of the board
+                        tetris_game.size-2,
+                        # Amplify the horizontal size of the block by the size of the board
+                        tetris_game.size-2])
 
         # Display game over here when finishing looping through everything
 

@@ -11,8 +11,8 @@ colors = [
     (255, 215, 0), # yellow
     (0, 255, 0), # green
     (0, 0, 255), # blue
-    (46, 43, 95), # indigo
     (139, 0, 255), # violet
+    (255, 20, 147) # pink
 ]
 
 class Piece:

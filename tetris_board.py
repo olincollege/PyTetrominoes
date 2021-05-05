@@ -1,6 +1,7 @@
 """
 Tetris Game Implementation
 """
+import time
 from tetris_piece import Piece
 
 class TetrisBoard:
@@ -8,11 +9,12 @@ class TetrisBoard:
     Tetris Board with basic play functionality
 
     Attributes:
-        score: current game score
-        state: current state of game (start or finish)
-        board: current 20x10 playing field
         height: height of the board
         width: width of the board
+        board: current 20x10 playing field
+        score: current game score
+        level: game level based on rows cleared
+        state: current state of game (start or finish)
         Piece: the piece
     """
     score = 0
@@ -20,8 +22,8 @@ class TetrisBoard:
     board = []
     height = 20
     width = 10
-    x_position = 100
-    y_position = 60
+    x = 100
+    y = 60
     size = 20
     piece = None
 
@@ -30,21 +32,27 @@ class TetrisBoard:
         self.width = width
         self.board = []
         self.score = 0
+        self.level = 1
         self.state = "start"
         for row in range(height):
             new_line = []
             for column in range(width):
                 new_line.append(0)
             self.board.append(new_line)
+    
+    def __repr__(self):
+        print(f"score: {self.score},\n ")
+        print(f"current squares on board:\n{self.board}")
+        print(f"Current level is {self.level}")
 
     """
     Creates a new piece
     """
     def new_piece(self):
-        self.piece = Piece(0,0)
+        self.piece = Piece(3,0)
 
     """
-    Check if the falling piece is touching something fixed on the field
+    Check if the piece is touching something fixed on the field
     """
     def touches(self):
         pass
@@ -54,6 +62,7 @@ class TetrisBoard:
     """
     def break_line(self):
         pass
+
 
     """
     Check if allowed to move or rotate the Figure
@@ -71,7 +80,8 @@ class TetrisBoard:
     Move the block down by one space
     """
     def go_down(self):
-        pass
+        self.piece.y += 1
+        time.sleep(0.2)
 
     """
     Move the block sideways
