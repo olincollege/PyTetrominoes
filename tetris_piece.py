@@ -28,7 +28,7 @@ class Piece:
         color: color of the piece
         rotation: the orientation of the piece
     """
-    # All the pieces in a 4x4 square and their corresponding rotations
+            # All the pieces in a 4x4 square and their corresponding rotations
     all_pieces = [
         [[1, 5, 9, 13], [4, 5, 6, 7]], # Line block
         [[1, 2, 5, 9], [0, 4, 5, 6], [1, 5, 9, 8], [4, 5, 6, 10]], # J-block
@@ -36,7 +36,8 @@ class Piece:
         [[1, 4, 5, 6], [1, 4, 5, 9], [4, 5, 6, 9], [1, 5, 6, 9]], # T-block
         [[5, 6, 8, 9], [1, 5, 6, 10]], # S block
         [[4, 5, 9, 10], [2, 5, 6, 9]], # Z block
-        [[1, 2, 5, 6]],  # Square block
+        [[1, 2, 5, 6]],
+      ]  # Square block
 
     # Piece attributes
     def __init__(self, y, x):
