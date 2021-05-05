@@ -1,7 +1,8 @@
 """
 Tetris Game Implementation
 """
-from tetris_piece import Piece, colors
+import time
+from tetris_piece import Piece
 
 class TetrisBoard:
     """
@@ -12,7 +13,7 @@ class TetrisBoard:
         board: current 20x10 playing field
         height: height of the board
         width: width of the board
-        Piece: the piece
+        piece: the tetris piece
     """
     score = 0
     state = "start"
@@ -36,22 +37,12 @@ class TetrisBoard:
     def __init__(self, height, width):
         self.height = height
         self.width = width
-        self.board = []
         self.score = 0
         self.level = 1 #Game Level
         self.state = "start"
-        self.rows_cleared = 0
-        #self.y = None
-        #self.x = None
-        # Create a empty playing field
-        # self.board = [[0 for _ in range(self.width)]\
-        # for _ in range(self.height)]
         
-        for row in range(height):
-            new_line = []
-            for column in range(width):
-                new_line.append((0,0,0))
-            self.board.append(new_line)
+        self.board = [[0 for _ in range(self.width)] for _ in range(self.height)]
+        self.rows_cleared = 0
     
     def __repr__(self):
         print(f"score: {self.score},\n ")
@@ -62,69 +53,32 @@ class TetrisBoard:
     Creates a new active piece
     """
     def new_piece(self):
-        self.piece = Piece(0,0)
-        #preallocate the set of global coordinates for the piece for speed.
-        self.piece.global_coordinates = [[0,0] for _ in range(4)]
-
-    def global_coordinates(self, rotation = None):
-        """
-        Gives the global coordinates of a piece's location
-        based on its rotation and the reference frame coordinates.
-        sets self.global_coordinates to a list of four lists, each containing
-        the y and x coordinates (row and column number) of each block in the
-        piece.
-        """
-        if rotation == None:
-            rotation = self.piece.rotation
-        ref_frame = [0 for _ in range(4)]
-        for i in range(4):
-            ref_frame[i] = self.piece.type[rotation][i]
-            self.piece.global_coordinates[i] = self.block_to_coordinates\
-                [ref_frame[i]]
-            self.piece.global_coordinates[i][0] += self.piece.y
-            self.piece.global_coordinates[i][1] += self.piece.x
+        self.piece = Piece(3, 0)
 
     """
-    Check if the falling piece is touching with a block that is
-    already fixed on the field
+    Check if the falling piece is intersecting with something fixed on the field
     """
-    def touch_left(self):
-        self.global_coordinates()
-        #y = self.piece.global_coordinates[i][0]
-        #x = self.piece.global_coordinates[i][1]
-        for i in range(4):
-            if self.board[self.piece.global_coordinates[i][0]]\
-                [self.piece.global_coordinates[i][1] - 1] != 0:
-                return True
-        return False
-
-    def touch_right(self):
-        self.global_coordinates()
-        for i in range(4):
-            if self.board[self.piece.global_coordinates[i][0]]\
-                [self.piece.global_coordinates[i][1] + 1] != 0:
-                return True
-        return False
-
-    def touch_top(self):
-        self.global_coordinates()
-        for i in range(4):
-            if self.board[self.piece.global_coordinates[i][0] - 1]\
-                [self.piece.global_coordinates[i][1]] != 0:
-                return True
-        return False
-
-    """
-    Check if the rotated block would touch another block
-    """
-
-    def touch_rotate(self):
-        self.global_coordinates(self.piece.rotation + 1)
-        for i in range(4):
-            if self.board[self.piece.global_coordinates[i][0]]\
-                [self.piece.global_coordinates[i][1]] != 0:
-                return True
-        return False
+    def check_collision(self):
+        collision = False
+        # For each 4x4 block space piece
+        for row in range(4):
+            for column in range(4):
+                # Check each individual block in the 4x4 square for the piece
+                if row * 4 + column in self.piece.piece_image():
+                    # Conditional by row:
+                    # - If the current piece width and the piece height
+                    # is greater than the base of the board (bottom),
+                    # - If the current piece height and the piece width
+                    # is greater than the sides of the board (right side), 
+                    # - If the current piece height and the piece width
+                    # is less than zero (left side),
+                    # - If the pieces on the board make contact with each other
+                    if row + self.piece.y > self.height - 1 or \
+                            column + self.piece.x > self.width - 1 or \
+                            column + self.piece.x < 0 or \
+                            self.board[row + self.piece.y][column + self.piece.x] > 0:
+                        collision = True
+        return collision
 
     """
     Check for line completions and remove them, then add points
@@ -146,34 +100,70 @@ class TetrisBoard:
     Lock the active piece in place by writing it to the board
     """
     def freeze(self):
-        self.global_coordinates()
-        for i in range(4):
-            self.board[self.piece.global_coordinates[i][0]]\
-                [self.piece.global_coordinates[i][1]] = self.piece.color
+        # For each 4x4 block space piece
+        for row in range(4):
+            for column in range(4):
+                # Check each individual block in the 4x4 square for the piece
+                if row * 4 + column in self.piece.piece_image():
+                    # Make the grid points the colors of the halted piece
+                    self.board[row + self.piece.y][column + self.piece.x] = self.piece.color
+        # Checks to see if a line can be broken
+        self.break_line() #TODO: Implement
+        # Creates a new piece on the board
+        self.new_piece()
 
     """
     Move the block all the way down until it can't move anymore ('smash' move)
     """
     def smash(self):
-        while not self.touch_top():
-            self.go_down()
+        # Until the block collides with something
+        while self.check_collision() is False:
+            # Bring the piece down
+            self.piece.y += 1
+        # When it collides with something, stop the piece
+        self.piece.y -= 1
+        self.freeze()
 
     """
     Move the block down by one space or freeze the block when it hits bottom
     """
     def go_down(self):
-        if not self.touch_top:
-            self.piece.y = self.piece.y + 1
-        self.freeze()
+        # Make the block go down by one
+        self.piece.y += 1
+        time.sleep(0.2)
+        # When the piece collides with something, stop it
+        if self.check_collision():
+            self.piece.y -= 1
+            self.freeze()
 
     """
-    Move the block sideways
+    Move the block to the left
     """
     def go_left(self):
-        if not self.touch_left():
-            self.piece.x = self.piece.x - 1
+        # Moves the object to the left
+        self.piece.x -= 1
+        # Reject going left if necessary
+        if self.check_collision():
+            self.piece.x += 1
 
-
+    """
+    Move the block to the right
+    """
     def go_right(self):
-        if not self.touch_right():
-            self.piece.x = self.piece.x + 1
+        # Moves the object to the right
+        self.piece.x += 1
+        # Reject going right if necessary
+        if self.check_collision():
+            self.piece.x -= 1
+
+    """
+    Rotate the block
+    """
+    def rotate(self):
+        # Save the original orientation
+        original_orientation = self.piece.orientation
+        # Rotate the object
+        self.piece.rotate()
+        # Reject the rotation if necessary
+        if self.check_collision():
+            self.piece.orientation = original_orientation
