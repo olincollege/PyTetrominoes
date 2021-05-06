@@ -32,30 +32,39 @@ def main():
         
         if tetris_game.state == "start":
             tetris_game.go_down()
-        else:
-            time.sleep(1)
-            break
         
+        # Put the following code in `tetris_controller.py`
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    tetris_game.rotate()
-                if event.key == pygame.K_DOWN:
-                    tetris_game.go_down()
-                if event.key == pygame.K_LEFT:
-                    tetris_game.go_left()
-                if event.key == pygame.K_RIGHT:
-                    tetris_game.go_right()
-                if event.key == pygame.K_SPACE:
-                    tetris_game.smash()
+            if tetris_game.state == "start":
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_UP:
+                        tetris_game.rotate()
+                    if event.key == pygame.K_DOWN:
+                        tetris_game.go_down()
+                    if event.key == pygame.K_LEFT:
+                        tetris_game.go_left()
+                    if event.key == pygame.K_RIGHT:
+                        tetris_game.go_right()
+                    if event.key == pygame.K_SPACE:
+                        tetris_game.smash()
+            else:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        tetris_game.__init__(20,10)
 
         # Fills the screen with black
         screen.fill(BLACK)
 
         # Draws the blocks
         draw()
+
+        # Display the score
+        display_score()
+
+        # Display the Game Over Screen when Triggered
+        game_over()
         
         # Display changes
         pygame.display.flip()
@@ -63,6 +72,9 @@ def main():
     # Quit the game when loop is completed
     pygame.quit()
 
+'''
+Draws the pieces on the board
+'''
 def draw():
     # Draws the Screen
     for screen_row in range(tetris_game.height):
@@ -123,6 +135,32 @@ def draw():
                         tetris_game.size - 1]
                         )
 
+'''
+Displays the current score
+'''
+def display_score():
+    score_font = pygame.font.Font('fonts/pigment.otf', 72)
+    score_text = score_font.render("Score: " + str(tetris_game.score), True, WHITE)
+    screen.blit(score_text, [50, 50])
+
+'''
+Display the game over screen
+'''
+def game_over():
+    if(tetris_game.state == "end"):
+        # Fill the screen with black so text can be seen more easily
+        screen.fill(BLACK)
+        # Render and display the game over text
+        game_over_font = pygame.font.Font('fonts/pigment.otf', 100)
+        game_over_text = game_over_font.render("Game Over!", True, colors[0])
+        screen.blit(game_over_text, [100, 400]) 
+        # Render and display the first line to ask users to play again 
+        try_again_font = pygame.font.Font('fonts/pigment.otf', 80)
+        try_again_text = game_over_font.render("Press 'ENTER' to", True, colors[2])
+        screen.blit(try_again_text, [15, 550])
+        # Render the second line to ask users to play again
+        try_again_text_1 = game_over_font.render("try again!", True, colors[2])
+        screen.blit(try_again_text_1, [120, 650])
+ 
 if __name__ == "__main__":
     main()
-    
