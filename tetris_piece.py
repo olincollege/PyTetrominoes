@@ -28,6 +28,7 @@ class Piece:
             Line-shape, Mirrored L-shape, and Square-shape)
         color: color of the piece
         rotation: the orientation of the piece
+        size: dimension of the piece in its rotation
     """
     # All the pieces in a 4x4 square and their corresponding rotations
     all_pieces = [
@@ -47,6 +48,7 @@ class Piece:
         self.type = random.randint(0, len(self.all_pieces) - 1)
         self.color = random.randint(1, len(colors) - 1)
         self.orientation = 0
+        self.size = 4
 
     """
     Gets the image of the piece
@@ -70,4 +72,12 @@ class Piece:
         the piece type with its current orientation
     """
     def rotate(self):
-        self.orientation = (self.orientation + 1) % len(self.all_pieces[self.type])
+        # get the original orientation before rotation
+        original_orientation = self.orientation
+        # if the original orientation is going to be out of bounds
+        if original_orientation >= len(self.all_pieces[self.type])-1:
+            # change the orientation to the initial orientation
+            self.orientation = 0
+        else:
+            # if not, go to the next orientation
+            self.orientation += 1

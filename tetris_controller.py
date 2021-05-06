@@ -45,7 +45,7 @@ class TetrisController(ABC):
         for players to make moves on the Tetris board
         
         Arguments:
-            - self: represents the instance of the class
+           - self: represents the instance of the class
         """
         pass
 

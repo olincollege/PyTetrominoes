@@ -14,8 +14,8 @@ WHITE = (255, 255, 255)
 GRAY = (128, 128, 128)
 
 # Set dimensions
-WIDTH = 400
-HEIGHT = 500
+WIDTH = 600
+HEIGHT = 1000
 size = (WIDTH, HEIGHT)
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("PyTetrominoes")
@@ -86,10 +86,10 @@ def draw():
     # Draws the falling pieces
     if tetris_game.piece:
         # For each 4x4 block space piece
-        for block_row in range(4):
-            for block_column in range(4):
+        for block_row in range(tetris_game.piece.size):
+            for block_column in range(tetris_game.piece.size):
                 # Check each individual block in the 4x4 square for the piece
-                if block_row * 4 + block_column in tetris_game.piece.piece_image():
+                if block_row * tetris_game.piece.size + block_column in tetris_game.piece.piece_image():
                     pygame.draw.rect(
                         # in the playing screen
                         screen,
