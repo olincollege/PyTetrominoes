@@ -5,12 +5,6 @@ import pygame
 
 from abc import ABC, abstractmethod
 
-# Up key: rotate
-    # Down key: move block down slightly quicker
-    # Left key: go to the side left
-    # Right key: go to the side right
-    # Space key: go all the way down
-
 class TetrisController(ABC):
     def __init__(self, TetrisBoard):
         """
@@ -50,5 +44,44 @@ class TetrisController(ABC):
         pass
 
 class Controller(TetrisController):
+    """
+    Implements the controls for the Tetris Game
+
+    Arguments:
+        TetrisController: the abstract base controller class of the Tetris Board
+    """
     def move(self):
-        pass
+        for event in pygame.event.get():
+            # While the game is running
+            if self.board.state == "start":
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                # Get User Input with Keyboard
+                if event.type == pygame.KEYDOWN:
+                    # If "Up" Key is Pressed
+                    if event.key == pygame.K_UP:
+                        # Rotate the piece
+                        self.board.rotate()
+                    # If "Down" Key is Pressed
+                    if event.key == pygame.K_DOWN:
+                        # Move the piece down by one space
+                        self.board.go_down()
+                    # If "Left" Key is Pressed
+                    if event.key == pygame.K_LEFT:
+                        # Move the piece to the left by one space
+                        self.board.go_left()
+                    # If "Right" Key is Pressed
+                    if event.key == pygame.K_RIGHT:
+                        # Move the piece to the right by one piece
+                        self.board.go_right()
+                    # If "Space" Key is Pressed
+                    if event.key == pygame.K_SPACE:
+                        # Move the piece all the way down
+                        self.board.smash()
+            # If User Loses the Game
+            else:
+                if event.type == pygame.KEYDOWN:
+                    # If the "Return" key is Pressed
+                    if event.key == pygame.K_RETURN:
+                        # Start a new game
+                        self.board.__init__(20,10)

@@ -5,10 +5,12 @@ import pygame, time
 
 from tetris_board import TetrisBoard
 from tetris_piece import Piece, colors
+from tetris_controller import Controller
 
 # Initialize pygame
 pygame.init()
 
+# Initialize the colors for the board
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GRAY = (128, 128, 128)
@@ -23,36 +25,21 @@ pygame.display.set_caption("PyTetrominoes")
 # Loop until the user clicks the close button.
 clock = pygame.time.Clock()
 tetris_game = TetrisBoard(20, 10)
+controller = Controller(tetris_game)
 
 def main():
     run = True
     while run:
+        # If there are no falling pieces, create a new piece
         if tetris_game.piece is None:
             tetris_game.new_piece()
         
+        # If the game state is "start", make the piece move down
         if tetris_game.state == "start":
             tetris_game.go_down()
-        
-        # Put the following code in `tetris_controller.py`
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            if tetris_game.state == "start":
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_UP:
-                        tetris_game.rotate()
-                    if event.key == pygame.K_DOWN:
-                        tetris_game.go_down()
-                    if event.key == pygame.K_LEFT:
-                        tetris_game.go_left()
-                    if event.key == pygame.K_RIGHT:
-                        tetris_game.go_right()
-                    if event.key == pygame.K_SPACE:
-                        tetris_game.smash()
-            else:
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN:
-                        tetris_game.__init__(20,10)
+
+        # User Controls
+        controller.move()
 
         # Fills the screen with black
         screen.fill(BLACK)
