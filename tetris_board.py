@@ -43,8 +43,6 @@ class TetrisBoard:
         if self.check_collision():
             # ...end the game
             self.state = "end"
-        # Print current state (for testing)
-        print(self.state)
 
     """
     Check if the falling piece is intersecting with something fixed on the field
@@ -96,8 +94,6 @@ class TetrisBoard:
                     for colored_column in range(self.width):
                         # replace the deleted row with the row above
                         self.board[colored_row][colored_column] = self.board[colored_row - 1][colored_column]
-        # Print the current score (for testing)
-        print(self.score)
 
     """
     Check if allowed to move or rotate the Figure
