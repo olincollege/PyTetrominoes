@@ -22,6 +22,10 @@ size = (WIDTH, HEIGHT)
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("PyTetrominoes")
 
+# Initialize and play the music continuously
+lofi_tetris = pygame.mixer.music.load("music/tetris_music.mp3")
+pygame.mixer.music.play(-1)
+
 # Loop until the user clicks the close button.
 clock = pygame.time.Clock()
 tetris_game = TetrisBoard(20, 10)

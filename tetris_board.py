@@ -1,8 +1,15 @@
 """
 Tetris Game Implementation
 """
-import time
+import pygame, time
 from tetris_piece import Piece
+
+pygame.init()
+
+# Initialize sound effects
+new_piece_sound = pygame.mixer.Sound("music/new_piece.wav")
+place_piece_sound = pygame.mixer.Sound("music/place_piece.wav")
+clear_row_sound = pygame.mixer.Sound("music/clear_row.wav")
 
 class TetrisBoard:
     """
@@ -39,6 +46,8 @@ class TetrisBoard:
     def new_piece(self):
         # Creates the piece at the center, top of the board
         self.piece = Piece(3, 0)
+        # Play the new piece sound effect
+        new_piece_sound.play()
         # If the piece intersects itself when created...
         if self.check_collision():
             # ...end the game
@@ -86,6 +95,8 @@ class TetrisBoard:
             # If there are no empty blocks in a single row,
             # there must be a completed row instead
             if empty_blocks == 0:
+                # Play the clear row sound effect
+                clear_row_sound.play()
                 # Since we know there is a completed row, add one
                 self.score += 1
                 # From the current row and upwards
@@ -108,6 +119,8 @@ class TetrisBoard:
                     self.board[row + self.piece.y][column + self.piece.x] = self.piece.color
         # Checks to see if a line can be broken
         self.break_line()
+        # Play the place piece sound effect
+        place_piece_sound.play()
         # Creates a new piece on the board
         self.new_piece()
 
