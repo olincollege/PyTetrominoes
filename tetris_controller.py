@@ -80,11 +80,11 @@ class Controller(TetrisController):
                         self.board.smash()
             # If User Loses the Game
             else:
+                # Quit Game if User Closes the Window
+                if event.type == pygame.QUIT:
+                    pygame.quit()
                 if event.type == pygame.KEYDOWN:
                     # If the "Return" key is Pressed
                     if event.key == pygame.K_RETURN:
                         # Start a new game
                         self.board.__init__(20,10)
-                    # Quit Game if User Closes the Window
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
