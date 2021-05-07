@@ -5,57 +5,57 @@ import pygame, time
 
 from tetris_board import TetrisBoard
 from tetris_piece import Piece, colors
+from tetris_controller import Controller
 
 # Initialize pygame
 pygame.init()
 
+# Initialize the colors for the board
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GRAY = (128, 128, 128)
 
 # Set dimensions
-WIDTH = 400
-HEIGHT = 500
+WIDTH = 600
+HEIGHT = 1000
 size = (WIDTH, HEIGHT)
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("PyTetrominoes")
 
+# Initialize and play the music continuously
+lofi_tetris = pygame.mixer.music.load("music/tetris_music.mp3")
+pygame.mixer.music.play(-1)
+
 # Loop until the user clicks the close button.
 clock = pygame.time.Clock()
 tetris_game = TetrisBoard(20, 10)
+controller = Controller(tetris_game)
 
 def main():
     run = True
     while run:
+        # If there are no falling pieces, create a new piece
         if tetris_game.piece is None:
             tetris_game.new_piece()
         
+        # If the game state is "start", make the piece move down
         if tetris_game.state == "start":
             tetris_game.go_down()
-        else:
-            time.sleep(1)
-            break
-        
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    tetris_game.rotate()
-                if event.key == pygame.K_DOWN:
-                    tetris_game.go_down()
-                if event.key == pygame.K_LEFT:
-                    tetris_game.go_left()
-                if event.key == pygame.K_RIGHT:
-                    tetris_game.go_right()
-                if event.key == pygame.K_SPACE:
-                    tetris_game.smash()
+
+        # User Controls
+        controller.move()
 
         # Fills the screen with black
         screen.fill(BLACK)
 
         # Draws the blocks
         draw()
+
+        # Display the score
+        display_score()
+
+        # Display the Game Over Screen when Triggered
+        game_over()
         
         # Display changes
         pygame.display.flip()
@@ -63,6 +63,9 @@ def main():
     # Quit the game when loop is completed
     pygame.quit()
 
+'''
+Draws the pieces on the board
+'''
 def draw():
     # Draws the Screen
     for screen_row in range(tetris_game.height):
@@ -86,10 +89,10 @@ def draw():
     # Draws the falling pieces
     if tetris_game.piece:
         # For each 4x4 block space piece
-        for block_row in range(4):
-            for block_column in range(4):
+        for block_row in range(tetris_game.piece.size):
+            for block_column in range(tetris_game.piece.size):
                 # Check each individual block in the 4x4 square for the piece
-                if block_row * 4 + block_column in tetris_game.piece.piece_image():
+                if block_row * tetris_game.piece.size + block_column in tetris_game.piece.piece_image():
                     pygame.draw.rect(
                         # in the playing screen
                         screen,
@@ -123,5 +126,32 @@ def draw():
                         tetris_game.size - 1]
                         )
 
+'''
+Displays the current score
+'''
+def display_score():
+    score_font = pygame.font.Font('fonts/pigment.otf', 72)
+    score_text = score_font.render("Score: " + str(tetris_game.score), True, WHITE)
+    screen.blit(score_text, [50, 50])
+
+'''
+Display the game over screen
+'''
+def game_over():
+    if(tetris_game.state == "end"):
+        # Fill the screen with black so text can be seen more easily
+        screen.fill(BLACK)
+        # Render and display the game over text
+        game_over_font = pygame.font.Font('fonts/pigment.otf', 100)
+        game_over_text = game_over_font.render("Game Over!", True, colors[0])
+        screen.blit(game_over_text, [100, 400]) 
+        # Render and display the first line to ask users to play again 
+        try_again_font = pygame.font.Font('fonts/pigment.otf', 80)
+        try_again_text = game_over_font.render("Press 'ENTER' to", True, colors[2])
+        screen.blit(try_again_text, [15, 550])
+        # Render the second line to ask users to play again
+        try_again_text_1 = game_over_font.render("try again!", True, colors[2])
+        screen.blit(try_again_text_1, [120, 650])
+ 
 if __name__ == "__main__":
     main()

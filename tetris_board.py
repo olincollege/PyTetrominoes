@@ -1,8 +1,15 @@
 """
 Tetris Game Implementation
 """
-import time
+import pygame, time
 from tetris_piece import Piece
+
+pygame.init()
+
+# Initialize sound effects
+new_piece_sound = pygame.mixer.Sound("music/new_piece.wav")
+place_piece_sound = pygame.mixer.Sound("music/place_piece.wav")
+clear_row_sound = pygame.mixer.Sound("music/clear_row.wav")
 
 class TetrisBoard:
     """
@@ -16,14 +23,14 @@ class TetrisBoard:
         width: width of the board
         piece: the tetris piece
     """
-    score = 0
     state = "start"
     board = []
+    x = 150
+    y = 240
     height = 20
     width = 10
-    x = 100
-    y = 60
-    size = 20
+    size = 30
+    score = 0
     piece = None
 
     def __init__(self, height, width):
@@ -37,7 +44,14 @@ class TetrisBoard:
     Creates a new piece
     """
     def new_piece(self):
+        # Creates the piece at the center, top of the board
         self.piece = Piece(3, 0)
+        # Play the new piece sound effect
+        new_piece_sound.play()
+        # If the piece intersects itself when created...
+        if self.check_collision():
+            # ...end the game
+            self.state = "end"
 
     """
     Check if the falling piece is intersecting with something fixed on the field
@@ -45,10 +59,10 @@ class TetrisBoard:
     def check_collision(self):
         collision = False
         # For each 4x4 block space piece
-        for row in range(4):
-            for column in range(4):
+        for row in range(self.piece.size):
+            for column in range(self.piece.size):
                 # Check each individual block in the 4x4 square for the piece
-                if row * 4 + column in self.piece.piece_image():
+                if row * self.piece.size + column in self.piece.piece_image():
                     # Conditional by row:
                     # - If the current piece width and the piece height
                     # is greater than the base of the board (bottom),
@@ -68,21 +82,45 @@ class TetrisBoard:
     Destroy line if pieces make a row
     """
     def break_line(self):
-        pass
+        # Check each row
+        for row in range(1, self.height):
+            # Check for the number of empty blocks in a row
+            empty_blocks = 0
+            # For each block in the row
+            for column in range(self.width):
+                # If a block in a row is not empty
+                if self.board[row][column] == 0:
+                    # There must be a colored block, so add one
+                    empty_blocks += 1
+            # If there are no empty blocks in a single row,
+            # there must be a completed row instead
+            if empty_blocks == 0:
+                # Play the clear row sound effect
+                clear_row_sound.play()
+                # Since we know there is a completed row, add one
+                self.score += 1
+                # From the current row and upwards
+                for colored_row in range(row, 1, -1):
+                    # For each column in the board
+                    for colored_column in range(self.width):
+                        # replace the deleted row with the row above
+                        self.board[colored_row][colored_column] = self.board[colored_row - 1][colored_column]
 
     """
     Check if allowed to move or rotate the Figure
     """
     def freeze(self):
         # For each 4x4 block space piece
-        for row in range(4):
-            for column in range(4):
+        for row in range(self.piece.size):
+            for column in range(self.piece.size):
                 # Check each individual block in the 4x4 square for the piece
-                if row * 4 + column in self.piece.piece_image():
+                if row * self.piece.size + column in self.piece.piece_image():
                     # Make the grid points the colors of the halted piece
                     self.board[row + self.piece.y][column + self.piece.x] = self.piece.color
         # Checks to see if a line can be broken
-        self.break_line() #TODO: Implement
+        self.break_line()
+        # Play the place piece sound effect
+        place_piece_sound.play()
         # Creates a new piece on the board
         self.new_piece()
 
