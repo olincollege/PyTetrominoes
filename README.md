@@ -1,6 +1,8 @@
 # PyTetrominoes
 A Python game with Tetrominoes by CJ Hilty & Daniel Park.
 
+GitHub Pages [Link](https://olincollege.github.io/PyTetrominoes/)
+
 ## Overview
 
 “PyTetrominoes” is a game with the same rules and mechanics as the classic 1984 Tetris Game. For information about the rules of Tetris, please visit the [official Tetris Fandom Website](https://tetris.fandom.com/wiki/Tetris_Guideline) for the official rules we based our game on.
