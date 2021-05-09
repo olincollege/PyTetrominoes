@@ -1,5 +1,5 @@
 # PyTetrominoes
-A Python game with Tetrominoes by CJ Hilty & Daniel Park.
+A Python game with Tetrominoes by [CJ Hilty](https://github.com/cjhi) & [Daniel Park](https://github.com/DanPark13).
 
 ## Overview
 
@@ -11,6 +11,20 @@ However, unlike normal Tetris, PyTetrominoes takes a different approach to the a
 
 ## Screenshots & Demonstrations
 
+When the user first opens the game, the game will start with the first block falling down in the Tetris board. The game will proceed as normal Tetris (with a few altercations mentioned in the __Overview__ section.
+
+[PyTetrominoes Opening Screen](https://imgur.com/a/xPmJpHg)
+
+Users will keep playing the game until the board gets filled to the brim with pieces, which then the "Game Over" Screen will show and users can start the game over by pressing the "Enter" button on their keyboard.
+
+[PyTetrominoes Game Over Screen](https://imgur.com/a/Z3hZKt3)
+
+A full game video demonstration is provided here:
+
+[![https://i.ytimg.com/vi/W9S_HbOwmrA/hqdefault.jpg?sqp=-oaymwEcCPYBEIoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDbtNmtIy4dzZ6rQYFRukTMmcYA6g](http://img.youtube.com/vi/W9S_HbOwmrA/0.jpg)](http://www.youtube.com/watch?v=W9S_HbOwmrA "PyTetrominoes Demo")
+
+Full Game Demonstration
+
 ## Libraries and Packages
 
 Please making sure you have [Python 3](https://realpython.com/installing-python/#how-to-install-python-on-windows) and [pip](https://phoenixnap.com/kb/install-pip-windows) already downloaded before running these commands. Instructions for installation are hyperlinked to the libraries.
@@ -21,14 +35,17 @@ Our game is built using Pygame, a cross-platform set of Python modules designed 
 
 ## Installation and Setup
 
-Clone this repository to your machine. To run the game, open the `tetris_game.py` file through the command line with the command `python tetris_game.py.` Alternatively, the game can be run by opening `tetris_game.py` through the file directory.
+If you want to install the game for yourself, please clone this repository to your machine. To run the game, open the `tetris_game.py` file through the command line with the command `python tetris_game.py.` Alternatively, the game can be run by opening `tetris_game.py` through the file directory.
 
 ## Media Credits
 
-Font: [Pigment Font](https://www.dafont.com/pigment.font)
+### Game Font: [Pigment Font](https://www.dafont.com/pigment.font)
 
-Audio:
-- [Lo-Fi Tetris Theme (Korobeiniki)](https://www.youtube.com/watch?v=DKUeAI79ujM&ab_channel=TeruTeruSky)
+### Audio:
+
+Background Music: [Lo-Fi Tetris Theme (Korobeiniki)](https://www.youtube.com/watch?v=DKUeAI79ujM&ab_channel=TeruTeruSky)
+
+Sound Effects:
 - [Writing Chalk Oneshot-02](https://freesound.org/people/newagesoup/sounds/377837/)
 - [Writing Chalk Oneshot-03](https://freesound.org/people/newagesoup/sounds/377840/)
 - [Writing Chalk Oneshot-04](https://freesound.org/people/newagesoup/sounds/377844/)
