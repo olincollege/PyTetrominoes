@@ -1,11 +1,13 @@
 """
 Tetris Game User-Input Controller
 """
+from abc import ABC, abstractmethod
 import pygame
 
-from abc import ABC, abstractmethod
-
 class TetrisController(ABC):
+    """
+    Abstract base class for the game controller.
+    """
     def __init__(self, TetrisBoard):
         """
         Stores 'TicTacToeBoard' as a private instance attribute
@@ -37,11 +39,10 @@ class TetrisController(ABC):
         """
         Abstract Method to be implemented later
         for players to make moves on the Tetris board
-        
+
         Arguments:
            - self: represents the instance of the class
         """
-        pass
 
 class Controller(TetrisController):
     """
@@ -50,12 +51,14 @@ class Controller(TetrisController):
     Arguments:
         TetrisController: the abstract base controller class of the Tetris Board
     """
+    # pylint: disable=no-member
     def move(self):
         for event in pygame.event.get():
             # While the game is running
             if self.board.state == "start":
                 if event.type == pygame.QUIT:
                     pygame.quit()
+                    self.board.state = "quit"
                 # Get User Input with Keyboard
                 if event.type == pygame.KEYDOWN:
                     # If "Up" Key is Pressed
@@ -78,13 +81,25 @@ class Controller(TetrisController):
                     if event.key == pygame.K_SPACE:
                         # Move the piece all the way down
                         self.board.smash()
-            # If User Loses the Game
-            else:
-                # Quit Game if User Closes the Window
-                if event.type == pygame.QUIT:
+    #pylint: enable=no-member
+
+    def end_actions(self):
+    # pylint: disable=no-member
+        """
+        Options for game over and if the user closes the window
+        """
+        # Quit Game if User Closes the Window
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                self.board.state = "quit"
+            if event.type == pygame.KEYDOWN:
+                # If the "Return" key is Pressed
+                if event.key == pygame.K_RETURN:
+                    # Start a new game
+                    self.board.__init__(20,10)
+                # If the "Q" key is Pressed
+                if event.key == pygame.K_q:
                     pygame.quit()
-                if event.type == pygame.KEYDOWN:
-                    # If the "Return" key is Pressed
-                    if event.key == pygame.K_RETURN:
-                        # Start a new game
-                        self.board.__init__(20,10)
+                    self.board.state = "quit"
+    #pylint: enable=no-member
