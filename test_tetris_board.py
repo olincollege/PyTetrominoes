@@ -14,7 +14,7 @@ def test_check_collision():
     board.new_piece(5)
     board.board[2][5] = 3 #Places a Green square at the 3rd row and 5th column,
     #which should intersect with the bottom right corner of the z-block.
-    assert board.check_collision() == True
+    assert board.check_collision()
 
 def test_new_piece():
     """
@@ -57,10 +57,13 @@ def test_go_left():
     assert board.board[0][1] == 6
 
 def test_rotation():
-    #Collision with a clockwise rotation. The obstruction is a piece that
-    #is fixed in the 3rd row and 5th column.
+    """
+    Tests for a collision with a clockwise rotation.
+    """
     board = TetrisBoard()
     board.new_piece(0)
+    #The obstruction is a piece that
+    #is fixed in the 3rd row and 5th column.
     board.board[1][4] = 2
     board.rotate()
     board.freeze()
@@ -84,7 +87,7 @@ def test_freeze():
     Check that a block will freeze at the proper coordinates.
     """
     board = TetrisBoard()
-    board.new_piece(1) #Creates L-block at the 4th-5th column and 
+    board.new_piece(1) #Creates L-block at the 4th-5th column and
     board.piece.orientation = 2 #sets upside-down orientation
     board.freeze()
     assert board.board[0][4] == 1
@@ -116,9 +119,9 @@ def test_break_line():
     board = TetrisBoard()
     #Fill 4 rows in the middle of the board, with full rows sandwiching
     #an incomplete row and with another incomplete row on top
-    for y in range(4):
-        for x in range(10):
-            board.board[y+13][x] = 5
+    for y_i in range(4):
+        for x_i in range(10):
+            board.board[y_i+13][x_i] = 5
     board.board[13][6] = 2
     board.board[13][9] = -1
     board.board[15][4] = -1

@@ -1,7 +1,6 @@
 """
 Runs the main game.
 """
-import faulthandler
 import pygame
 
 from tetris_board import TetrisBoard
@@ -29,7 +28,7 @@ pygame.mixer.music.play(-1)
 
 # Loop until the user clicks the close button.
 clock = pygame.time.Clock()
-tetris_game = TetrisBoard(20, 10)
+tetris_game = TetrisBoard()
 controller = Controller(tetris_game)
 
 def main():
@@ -55,7 +54,7 @@ def main():
 
         if tetris_game.state == "quit":
             pygame.quit() # pylint: disable=no-member
-            break
+            return "quit"
 
         # Draws the blocks
         draw()
@@ -71,6 +70,8 @@ def main():
 
         # End-of-game actions
         controller.end_actions()
+        if tetris_game.state == "quit":
+            return "quit"
 
 
 def draw():
@@ -95,6 +96,7 @@ def draw():
                 tetris_game.size],
                 # border radius
                 2)
+
 
     # Draws the falling pieces
     if tetris_game.piece:
@@ -121,10 +123,11 @@ def draw():
                         tetris_game.size - 2]
                         )
 
+
     # Draws the Frozen Pieces
     for board_row in range(tetris_game.height):
         for board_column in range(tetris_game.width):
-            if tetris_game.board[board_row][board_column]:
+            if tetris_game.board[board_row][board_column] != -1:
                 pygame.draw.rect(
                     # in the playing screen
                     screen,
@@ -174,4 +177,3 @@ def game_over():
 
 if __name__ == "__main__":
     main()
-    faulthandler.enable()

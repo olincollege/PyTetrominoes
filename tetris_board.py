@@ -38,26 +38,23 @@ class TetrisBoard:
     score = 0
     piece = None
 
-    def __init__(self, height, width):
-        self.height = height
-        self.width = width
+    def __init__(self):
         self.score = 0
         self.state = "start"
-        self.board = [[0 for _ in range(self.width)] for _ in range(self.height)]
+        self.board = [[-1 for _ in range(self.width)] for _ in range(self.height)]
 
-    def new_piece(self):
+    def new_piece(self, alt_type = -1):
         """
         Creates a new piece for the gameboard.
         """
         # Creates the piece at the center, top of the board
-        self.piece = Piece(3, 0)
+        self.piece = Piece(3, 0, alt_type)
         # Play the new piece sound effect
         new_piece_sound.play()
         # If the piece intersects itself when created...
         if self.check_collision():
             # ...end the game
             self.state = "end"
-
 
     def check_collision(self):
         """
@@ -82,7 +79,7 @@ class TetrisBoard:
                     if row + self.piece.y_row > self.height - 1 or \
                             column + self.piece.x_col > self.width - 1 or \
                             column + self.piece.x_col < 0 or \
-                            self.board[row + self.piece.y_row][column + self.piece.x_col] > 0:
+                            self.board[row + self.piece.y_row][column + self.piece.x_col] != -1:
                         collision = True
         return collision
 
@@ -98,8 +95,8 @@ class TetrisBoard:
             # For each block in the row
             for column in range(self.width):
                 # If a block in a row is not empty
-                if self.board[row][column] == 0:
-                    # There must be a colored block, so add one
+                if self.board[row][column] == -1:
+                    # There must be an empty block, so add one
                     empty_blocks += 1
             # If there are no empty blocks in a single row,
             # there must be a completed row instead
@@ -139,6 +136,9 @@ class TetrisBoard:
     def smash(self):
         """
         Move the block all the way down until it can't move anymore
+
+        Returns:
+            landing: the piece before the smash occurred
         """
         # Until the block collides with something
         while self.check_collision() is False:
@@ -146,7 +146,9 @@ class TetrisBoard:
             self.piece.y_row += 1
         # When it collides with something, stop the piece
         self.piece.y_row -= 1
+        landing = self.piece
         self.freeze()
+        return landing
 
     def go_down(self):
         """
@@ -174,7 +176,7 @@ class TetrisBoard:
 
     def go_right(self):
         """
-        Move the block to the right
+        Move the block to the right.
         """
         # Moves the object to the right
         self.piece.x_col += 1

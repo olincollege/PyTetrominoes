@@ -19,9 +19,7 @@ def test_limited_orientation():
     Test that a piece that has more limited orientations than other piece types
     will stay within those limitations.
     """
-    testpiece = Piece(3,1)
-    testpiece.type = 6
-    print(testpiece.type)
-    testpiece.orientation = 3
+
+    testpiece = Piece(3, 4, 6) #O-block, which has only one orientation
     testpiece.rotate()
     assert testpiece.orientation == 0

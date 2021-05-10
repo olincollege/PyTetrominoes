@@ -97,9 +97,10 @@ class Controller(TetrisController):
                 # If the "Return" key is Pressed
                 if event.key == pygame.K_RETURN:
                     # Start a new game
-                    self.board.__init__(20,10)
+                    self.board.__init__()
                 # If the "Q" key is Pressed
                 if event.key == pygame.K_q:
                     pygame.quit()
                     self.board.state = "quit"
     #pylint: enable=no-member
+    
