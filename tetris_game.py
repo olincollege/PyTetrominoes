@@ -73,7 +73,6 @@ def main():
         if tetris_game.state == "quit":
             return "quit"
 
-
 def draw():
     """
     Draws the pieces on the board
@@ -96,7 +95,6 @@ def draw():
                 tetris_game.size],
                 # border radius
                 2)
-
 
     # Draws the falling pieces
     if tetris_game.piece:
@@ -123,7 +121,6 @@ def draw():
                         tetris_game.size - 2]
                         )
 
-
     # Draws the Frozen Pieces
     for board_row in range(tetris_game.height):
         for board_column in range(tetris_game.width):
@@ -142,7 +139,6 @@ def draw():
                     tetris_game.size - 1]
                     )
 
-
 def display_score():
     """
     Displays the current score
@@ -150,7 +146,6 @@ def display_score():
     score_font = pygame.font.Font('fonts/pigment.otf', 72)
     score_text = score_font.render("Score: " + str(tetris_game.score), True, WHITE)
     screen.blit(score_text, [50, 50])
-
 
 def game_over():
     """
@@ -173,7 +168,6 @@ def game_over():
         try_again_text_1 = try_again_font.render("try again!", True, colors[2])
         text_rect_1 = try_again_text_1.get_rect(center=(WIDTH/2, 3*HEIGHT/4))
         screen.blit(try_again_text_1, text_rect_1)
-
 
 if __name__ == "__main__":
     main()

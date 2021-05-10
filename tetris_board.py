@@ -5,9 +5,7 @@ import time
 import pygame
 from tetris_piece import Piece
 
-
 pygame.init() # pylint: disable=no-member
-
 
 # Initialize sound effects
 new_piece_sound = pygame.mixer.Sound("music/new_piece.wav")
@@ -83,7 +81,6 @@ class TetrisBoard:
                         collision = True
         return collision
 
-
     def break_line(self):
         """
         Destroy line if pieces make a row.
@@ -113,7 +110,6 @@ class TetrisBoard:
                         self.board[colored_row][colored_column] = self.board\
                             [colored_row - 1][colored_column]
 
-
     def freeze(self):
         """
         Fix the block in place.
@@ -131,7 +127,6 @@ class TetrisBoard:
         place_piece_sound.play()
         # Creates a new piece on the board
         self.new_piece()
-
 
     def smash(self):
         """
@@ -162,7 +157,6 @@ class TetrisBoard:
             self.piece.y_row -= 1
             self.freeze()
 
-
     def go_left(self):
         """
         Move the block to the left
@@ -173,7 +167,6 @@ class TetrisBoard:
         if self.check_collision():
             self.piece.x_col += 1
 
-
     def go_right(self):
         """
         Move the block to the right.
@@ -183,7 +176,6 @@ class TetrisBoard:
         # Reject going right if necessary
         if self.check_collision():
             self.piece.x_col -= 1
-
 
     def rotate(self):
         """

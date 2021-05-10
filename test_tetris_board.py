@@ -4,7 +4,6 @@ Tests for the game board class.
 
 from tetris_board import TetrisBoard
 
-
 def test_check_collision():
     """
     Check that collisions are handled properly.

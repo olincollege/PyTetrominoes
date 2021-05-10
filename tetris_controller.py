@@ -103,4 +103,3 @@ class Controller(TetrisController):
                     pygame.quit()
                     self.board.state = "quit"
     #pylint: enable=no-member
-    
